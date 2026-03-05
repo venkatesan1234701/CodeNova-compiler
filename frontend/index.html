@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>CodeNova – Cloud Compiler</title>
+
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono&family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<script src="https://unpkg.com/monaco-editor@0.34.1/min/vs/loader.js"></script>
+
+<link rel="stylesheet" href="style.css">
+<style>
+    :root{
+
+--bg:#0f0c1a;
+--panel:#111827;
+--output:#22c55e;
+--accent:#f7df1e;
+
+}
+
+body{
+
+margin:0;
+font-family:'Outfit',sans-serif;
+
+background:var(--bg);
+
+color:white;
+
+height:100vh;
+overflow:hidden;
+
+transition:.3s;
+
+}
+
+/* HEADER */
+
+header{
+
+display:flex;
+align-items:center;
+justify-content:space-between;
+
+padding:0 25px;
+
+height:60px;
+
+background:rgba(0,0,0,0.4);
+
+border-bottom:1px solid #333;
+
+}
+
+/* LOGO */
+
+.logo{
+
+display:flex;
+align-items:center;
+
+gap:10px;
+
+font-size:22px;
+font-weight:700;
+
+}
+
+.logo-icon{
+
+width:32px;
+height:32px;
+
+background:var(--accent);
+
+border-radius:8px;
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+color:black;
+
+}
+
+/* BUTTONS */
+
+button{
+
+padding:8px 16px;
+
+border:none;
+
+border-radius:8px;
+
+cursor:pointer;
+
+background:#1a1228;
+
+color:#aaa;
+
+}
+
+button:hover{
+
+background:#2a1a40;
+
+}
+
+/* RUN BUTTON */
+
+.run-btn{
+
+background:var(--accent);
+
+color:black;
+
+font-weight:bold;
+
+}
+
+/* WORKSPACE */
+
+.workspace{
+
+display:grid;
+
+grid-template-columns:1fr 1fr;
+
+height:calc(100vh - 60px);
+
+}
+
+/* PANELS */
+
+.editor-panel,
+.output-panel{
+
+display:flex;
+
+flex-direction:column;
+
+background:var(--panel);
+
+transition:.3s;
+
+}
+
+/* PANEL HEADER */
+
+.panel-header{
+
+padding:12px 20px;
+
+border-bottom:1px solid #333;
+
+}
+
+/* EDITOR */
+
+#editor{
+
+flex:1;
+
+}
+
+/* TERMINAL */
+
+#output{
+
+flex:1;
+
+padding:20px;
+
+font-family:'JetBrains Mono',monospace;
+
+background:transparent;
+
+color:var(--output);
+
+overflow:auto;
+
+}
+
+.run-btn:disabled{
+opacity:0.6;
+cursor:not-allowed;
+}
+
+/* STATUS BAR */
+
+.statusbar{
+
+position:fixed;
+
+bottom:0;
+left:0;
+right:0;
+
+height:24px;
+
+background:var(--accent);
+
+color:black;
+
+display:flex;
+
+align-items:center;
+
+padding:0 16px;
+
+font-size:11px;
+
+font-family:'JetBrains Mono';
+
+}
+</style>
+</head>
+
+<body>
+
+<header>
+
+<div class="logo">
+<div class="logo-icon">⚡</div>
+<span>CodeNova</span>
+</div>
+
+<div class="lang-nav">
+
+<!-- <button onclick="setLanguage('javascript')" class="lang-btn">
+JavaScript
+</button>
+
+<button onclick="setLanguage('python')" class="lang-btn">
+Python
+</button> -->
+
+<button id="jsBtn" onclick="setLanguage('javascript')" class="lang-btn">
+JavaScript
+</button>
+
+<button id="pyBtn" onclick="setLanguage('python')" class="lang-btn">
+Python
+</button>
+
+</div>
+
+<div class="theme-nav">
+
+<button onclick="changeTheme('dark')">Dark</button>
+<button onclick="changeTheme('light')">Light</button>
+<button onclick="changeTheme('midnight')">Night</button>
+<button onclick="changeTheme('yellow')">Yellow</button>
+
+</div>
+
+<!-- <button onclick="runCode()" class="run-btn">
+Run Code
+</button> -->
+
+<button id="runBtn" onclick="runCode()" class="run-btn">
+Run Code
+</button>
+
+</header>
+
+<div class="workspace">
+
+<div class="editor-panel">
+
+<div class="panel-header">
+Editor
+</div>
+
+<div id="editor"></div>
+
+</div>
+
+<div class="output-panel">
+
+<div class="panel-header">
+Terminal Output
+</div>
+
+<pre id="output">Run code to see output...</pre>
+
+</div>
+
+</div>
+
+<div class="statusbar">
+CodeNova Cloud Compiler ⚡
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
