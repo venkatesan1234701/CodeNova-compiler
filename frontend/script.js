@@ -114,7 +114,7 @@ editor.updateOptions({
 readOnly:true
 })
 
-fetch("http://localhost:5000/run",{
+fetch("https://codenova-compiler-1.onrender.com/run",{
 
 method:"POST",
 
