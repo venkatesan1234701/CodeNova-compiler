@@ -92,7 +92,9 @@ const app = express()
 
 app.use(cors())
 app.use(express.json())
-
+app.get("/", (req, res) => {
+  res.send("CodeNova backend running 🚀");
+});
 app.post("/run",(req,res)=>{
 
 const { language, code } = req.body
