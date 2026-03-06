@@ -30,14 +30,13 @@
 // }
 
 // module.exports = runPython
+
+
 const { spawn } = require("child_process")
-const fs = require("fs")
 
 function runPython(code,res){
 
-fs.writeFileSync("temp.py",code)
-
-const child = spawn("python3",["temp.py"])
+const child = spawn("python3",["-c",code])
 
 res.writeHead(200,{
 "Content-Type":"text/plain"
