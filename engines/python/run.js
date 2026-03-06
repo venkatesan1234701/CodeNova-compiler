@@ -30,18 +30,14 @@
 // }
 
 // module.exports = runPython
-
 const { spawn } = require("child_process")
 
 function runPython(code,res){
 
-const child = spawn("python", ["-c", code], {
-stdio:["pipe","pipe","pipe"]
-})
+const child = spawn("python3", ["-c", code])
 
 res.writeHead(200,{
-"Content-Type":"text/plain",
-"Transfer-Encoding":"chunked"
+"Content-Type":"text/plain"
 })
 
 let finished=false
