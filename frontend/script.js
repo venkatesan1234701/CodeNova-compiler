@@ -71,7 +71,7 @@ editor.updateOptions({
 readOnly:true
 })
 
-fetch("https://codenova-compiler-1.onrender.com/run",{
+fetch("https://codenova-compiler-production.up.railway.app/run",{
 
 method:"POST",
 
