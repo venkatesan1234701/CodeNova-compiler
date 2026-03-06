@@ -31,25 +31,17 @@
 
 // module.exports = runPython
 const { spawn } = require("child_process")
+const fs = require("fs")
 
 function runPython(code,res){
 
-const child = spawn("python3", ["-c", code])
+fs.writeFileSync("temp.py",code)
+
+const child = spawn("python3",["temp.py"])
 
 res.writeHead(200,{
 "Content-Type":"text/plain"
 })
-
-let finished=false
-
-const timer=setTimeout(()=>{
-if(!finished){
-child.kill("SIGKILL")
-res.write("\n⚠ Execution stopped (Time limit exceeded)")
-res.end()
-finished=true
-}
-},15000)
 
 child.stdout.on("data",(data)=>{
 res.write(data.toString())
@@ -60,11 +52,7 @@ res.write(data.toString())
 })
 
 child.on("close",()=>{
-if(!finished){
-clearTimeout(timer)
 res.end()
-finished=true
-}
 })
 
 }
