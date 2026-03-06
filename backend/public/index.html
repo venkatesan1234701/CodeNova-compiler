@@ -1,478 +1,417 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>CodeNova – Cloud Compiler</title>
-
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono&family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
-
-<script src="https://unpkg.com/monaco-editor@0.34.1/min/vs/loader.js"></script>
-
-<link rel="stylesheet" href="style.css">
-<style>
-    :root{
-
---bg:#0f0c1a;
---panel:#111827;
---output:#22c55e;
---accent:#f7df1e;
-
-}
-
-body{
-
-margin:0;
-font-family:'Outfit',sans-serif;
-
-background:var(--bg);
-
-color:white;
-
-height:100vh;
-overflow:hidden;
-
-transition:.3s;
-
-}
-
-/* HEADER */
-
-header{
-
-display:flex;
-align-items:center;
-justify-content:space-between;
-
-padding:0 25px;
-
-height:60px;
-
-background:rgba(0,0,0,0.4);
-
-border-bottom:1px solid #333;
-
-}
-
-/* LOGO */
-
-.logo{
-
-display:flex;
-align-items:center;
-
-gap:10px;
-
-font-size:22px;
-font-weight:700;
-
-}
-
-.logo-icon{
-
-width:32px;
-height:32px;
-
-background:var(--accent);
-
-border-radius:8px;
-
-display:flex;
-align-items:center;
-justify-content:center;
-
-color:black;
-
-}
-
-/* BUTTONS */
-
-button{
-
-padding:8px 16px;
-
-border:none;
-
-border-radius:8px;
-
-cursor:pointer;
-
-background:#1a1228;
-
-color:#aaa;
-
-}
-
-button:hover{
-
-background:#2a1a40;
-
-}
-
-/* RUN BUTTON */
-
-.run-btn{
-
-background:var(--accent);
-
-color:black;
-
-font-weight:bold;
-
-}
-
-/* WORKSPACE */
-
-.workspace{
-
-display:grid;
-
-grid-template-columns:1fr 1fr;
-
-height:calc(100vh - 60px);
-
-}
-
-/* PANELS */
-
-.editor-panel,
-.output-panel{
-
-display:flex;
-
-flex-direction:column;
-
-background:var(--panel);
-
-transition:.3s;
-
-}
-
-/* PANEL HEADER */
-
-.panel-header{
-
-padding:12px 20px;
-
-border-bottom:1px solid #333;
-
-}
-
-/* EDITOR */
-
-#editor{
-
-flex:1;
-
-}
-/* ================= MOBILE FIX ================= */
-
-@media screen and (max-width:768px){
-
-header{
-    display:flex;
-    flex-wrap:wrap;
-    align-items:center;
-    justify-content:space-between;
-    gap:6px;
-    padding:8px;
-}
-
-/* Active dropdown hide */
-
-.mode-nav{
-    display:none;
-}
-
-/* Run button always visible */
-
-.run-btn{
-    width:100%;
-    padding:8px;
-    font-size:13px;
-}
-
-/* Workspace vertical */
-
-.workspace{
-    display:flex;
-    flex-direction:column;
-    height:calc(100vh - 130px);
-}
-
-/* Editor bigger */
-
-.editor-panel{
-    width:100%;
-    height:65vh;
-}
-
-/* Output smaller */
-
-.output-panel{
-    width:100%;
-    height:35vh;
-}
-
-/* Status bar */
-
-.statusbar{
-    font-size:11px;
-    text-align:center;
-}
-
-}/* ================= MOBILE RESPONSIVE FIX ================= */
-
-@media screen and (max-width:768px){
-
-/* HEADER */
-
-header{
-    display:flex;
-    flex-wrap:wrap;
-    align-items:center;
-    gap:6px;
-    padding:8px;
-}
-
-/* Hide mode nav (Active dropdown) */
-
-.mode-nav{
-    display:none;
-}
-
-/* WORKSPACE STACK */
-
-.workspace{
-    display:flex;
-    flex-direction:column;
-    height:calc(100vh - 120px);
-}
-
-/* EDITOR BIGGER */
-
-.editor-panel{
-    width:100%;
-    height:65vh;
-}
-
-/* OUTPUT */
-
-.output-panel{
-    width:100%;
-    height:35vh;
-}
-
-/* ================= RUN BUTTON ================= */
-
-/* mobile floating run button */
-
-.run-btn{
-    position:fixed;
-    bottom:60px;
-    left:50%;
-    transform:translateX(-50%);
-    
-    background:#ff3b3b;
-    color:white;
-    
-    border:none;
-    padding:12px 20px;
-    
-    font-size:14px;
-    font-weight:bold;
-    
-    border-radius:8px;
-    
-    z-index:999;
-    
-    box-shadow:0 4px 12px rgba(0,0,0,0.4);
-}
-
-/* status bar */
-
-.statusbar{
-    font-size:11px;
-    text-align:center;
-}
-
-}
-/* TERMINAL */
-
-#output{
-
-flex:1;
-
-padding:20px;
-
-font-family:'JetBrains Mono',monospace;
-
-background:transparent;
-
-color:var(--output);
-
-overflow:auto;
-
-}
-
-.run-btn:disabled{
-opacity:0.6;
-cursor:not-allowed;
-}
-
-/* STATUS BAR */
-
-.statusbar{
-
-position:fixed;
-
-bottom:0;
-left:0;
-right:0;
-
-height:24px;
-
-background:var(--accent);
-
-color:black;
-
-display:flex;
-
-align-items:center;
-
-padding:0 16px;
-
-font-size:11px;
-
-font-family:'JetBrains Mono';
-
-}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  <title>CodeNova – Cloud Compiler</title>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono&family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/monaco-editor@0.34.1/min/vs/loader.js"></script>
+  <style>
+    :root {
+      --bg: #0f0c1a;
+      --panel: #111827;
+      --output: #22c55e;
+      --accent: #f7df1e;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Outfit', sans-serif;
+      background: var(--bg);
+      color: white;
+      height: 100vh;
+      overflow: hidden;
+      transition: 0.3s;
+    }
+
+    /* HEADER */
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 25px;
+      height: 60px;
+      background: rgba(0,0,0,0.4);
+      border-bottom: 1px solid #333;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 22px;
+      font-weight: 700;
+    }
+
+    .logo-icon {
+      width: 32px;
+      height: 32px;
+      background: var(--accent);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: black;
+    }
+
+    button {
+      padding: 8px 16px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      background: #1a1228;
+      color: #aaa;
+    }
+
+    button:hover {
+      background: #2a1a40;
+    }
+
+    .run-btn {
+      background: var(--accent);
+      color: black;
+      font-weight: bold;
+    }
+
+    .run-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    /* WORKSPACE */
+    .workspace {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      height: calc(100vh - 60px);
+    }
+
+    /* PANELS */
+    .editor-panel,
+    .output-panel {
+      display: flex;
+      flex-direction: column;
+      background: var(--panel);
+      overflow: hidden;          /* Important: clips child, but child can scroll inside */
+    }
+
+    .panel-header {
+      padding: 12px 20px;
+      border-bottom: 1px solid #333;
+      flex-shrink: 0;
+    }
+
+    /* EDITOR */
+    #editor {
+      flex: 1;
+      min-height: 0;            /* Essential for flex child to scroll */
+    }
+
+    /* OUTPUT */
+    #output {
+      flex: 1;
+      padding: 20px;
+      font-family: 'JetBrains Mono', monospace;
+      background: transparent;
+      color: var(--output);
+      overflow-y: auto;
+      overflow-x: hidden;
+      white-space: pre-wrap;
+      word-break: break-word;
+      min-height: 0;            /* Ensures scrolling inside flex column */
+      margin: 0;
+    }
+
+    /* STATUS BAR */
+    .statusbar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 24px;
+      background: var(--accent);
+      color: black;
+      display: flex;
+      align-items: center;
+      padding: 0 16px;
+      font-size: 11px;
+      font-family: 'JetBrains Mono';
+      z-index: 10;
+    }
+
+    /* ================= MOBILE FIXES ================= */
+    @media screen and (max-width: 768px) {
+      header {
+        flex-wrap: wrap;
+        height: auto;
+        padding: 8px 12px;
+        gap: 8px;
+      }
+
+      .mode-nav {
+        display: none;          /* Hide dropdown on mobile */
+      }
+
+      .workspace {
+        display: flex;
+        flex-direction: column;
+        height: calc(100vh - 120px); /* Adjust for header + status */
+      }
+
+      .editor-panel {
+        width: 100%;
+        height: 60vh;           /* 60% of remaining space */
+        flex-shrink: 0;
+      }
+
+      .output-panel {
+        width: 100%;
+        height: 40vh;           /* 40% of remaining space */
+        flex-shrink: 0;
+      }
+
+      /* Ensure both panels can scroll internally */
+      #editor, #output {
+        min-height: 0;
+      }
+
+      /* Make run button fixed at bottom on mobile */
+      .run-btn {
+        position: fixed;
+        bottom: 70px;           /* Above status bar */
+        left: 50%;
+        transform: translateX(-50%);
+        background: #ff3b3b;
+        color: white;
+        border: none;
+        padding: 12px 20px;
+        font-size: 14px;
+        font-weight: bold;
+        border-radius: 8px;
+        z-index: 999;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+      }
+
+      .statusbar {
+        font-size: 11px;
+        text-align: center;
+        z-index: 1000;
+      }
+    }
+
+    /* Optional: small screens below 480px */
+    @media screen and (max-width: 480px) {
+      .editor-panel {
+        height: 55vh;
+      }
+      .output-panel {
+        height: 35vh;
+      }
+    }
+  </style>
 </head>
-
 <body>
-<!-- 
-<header>
+  <header>
+    <div class="logo">
+      <div class="logo-icon">⚡</div>
+      <span>CodeNova</span>
+    </div>
+    <div class="lang-nav">
+      <button id="jsBtn" onclick="setLanguage('javascript')" class="lang-btn">JavaScript</button>
+      <button id="pyBtn" onclick="setLanguage('python')" class="lang-btn">Python</button>
+    </div>
+    <div class="theme-nav">
+      <button onclick="changeTheme('dark')">Dark</button>
+      <button onclick="changeTheme('light')">Light</button>
+      <button onclick="changeTheme('midnight')">Night</button>
+      <button onclick="changeTheme('yellow')">Yellow</button>
+    </div>
+    <div class="mode-nav">
+      <select onchange="changeMode(this.value)">
+        <option value="active" selected>Active</option>
+        <option value="disable">Disable</option>
+        <option value="notepad">Notepad</option>
+      </select>
+    </div>
+    <button id="runBtn" onclick="runCode()" class="run-btn">Run Code</button>
+  </header>
 
-<div class="logo">
-<div class="logo-icon">⚡</div>
-<span>CodeNova</span>
-</div>
+  <div class="workspace">
+    <div class="editor-panel">
+      <div class="panel-header">Editor</div>
+      <div id="editor"></div>
+    </div>
+    <div class="output-panel">
+      <div class="panel-header">Terminal Output</div>
+      <pre id="output">Run code to see output...</pre>
+    </div>
+  </div>
 
-<div class="lang-nav">
+  <div class="statusbar">CodeNova Cloud Compiler ⚡</div>
 
-<button onclick="setLanguage('javascript')" class="lang-btn">
-JavaScript
-</button>
+  <script>
+    let editor;
+    let currentLanguage = "javascript";
 
-<button onclick="setLanguage('python')" class="lang-btn">
-Python
-</button> 
+    require.config({ paths: { vs: 'https://unpkg.com/monaco-editor@0.34.1/min/vs' } });
 
-<button id="jsBtn" onclick="setLanguage('javascript')" class="lang-btn">
-JavaScript
-</button>
+    require(["vs/editor/editor.main"], function () {
+      editor = monaco.editor.create(document.getElementById("editor"), {
+        value: `console.log("Hello Rocky 🚀")`,
+        language: "javascript",
+        theme: "vs-dark",
+        fontSize: 14,
+        automaticLayout: true
+      });
+      changeMode("active");
+    });
 
-<button id="pyBtn" onclick="setLanguage('python')" class="lang-btn">
-Python
-</button>
+    function setLanguage(lang) {
+      currentLanguage = lang;
+      monaco.editor.setModelLanguage(editor.getModel(), lang);
+      if (lang === "javascript") {
+        editor.setValue(`console.log("JavaScript running 🚀")`);
+      } else if (lang === "python") {
+        editor.setValue(`print("Python running 🚀")`);
+      }
+    }
 
-</div>
+    function runCode() {
+      const code = editor.getValue();
+      const output = document.getElementById("output");
+      const runBtn = document.getElementById("runBtn");
+      const jsBtn = document.getElementById("jsBtn");
+      const pyBtn = document.getElementById("pyBtn");
 
-<div class="theme-nav">
-    
+      let hasError = false;
+      let firstOutput = true;
+      const startTime = performance.now();
 
-<button onclick="changeTheme('dark')">Dark</button>
-<button onclick="changeTheme('light')">Light</button>
-<button onclick="changeTheme('midnight')">Night</button>
-<button onclick="changeTheme('yellow')">Yellow</button>
+      output.textContent = "▶ Running...\n\n";
+      runBtn.disabled = true;
+      jsBtn.disabled = true;
+      pyBtn.disabled = true;
+      runBtn.innerText = "Running...";
+      editor.updateOptions({ readOnly: true });
 
-</div>
+      fetch("/run", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ language: currentLanguage, code: code })
+      })
+        .then(response => {
+          const reader = response.body.getReader();
+          const decoder = new TextDecoder();
 
- <button onclick="runCode()" class="run-btn">
-Run Code
-</button> 
+          function read() {
+            reader.read().then(({ done, value }) => {
+              if (done) {
+                const endTime = performance.now();
+                const execTime = ((endTime - startTime) / 1000).toFixed(4);
+                output.textContent += "\n-------------------------\n";
+                output.textContent += `⏱ Execution Time: ${execTime}s\n`;
+                output.textContent += `💾 Memory Usage: ~5 MB\n`;
+                output.textContent += hasError ? "❌ Execution Error" : "✅ Execution Completed";
 
-<button id="runBtn" onclick="runCode()" class="run-btn">
-Run Code
-</button>
+                runBtn.disabled = false;
+                jsBtn.disabled = false;
+                pyBtn.disabled = false;
+                runBtn.innerText = "Run Code";
+                editor.updateOptions({ readOnly: false });
+                return;
+              }
 
-</header> -->
+              const text = decoder.decode(value);
+              if (firstOutput) {
+                output.textContent = "";
+                firstOutput = false;
+              }
+              if (
+                text.includes("Error") ||
+                text.includes("ReferenceError") ||
+                text.includes("SyntaxError") ||
+                text.includes("Traceback") ||
+                text.includes("Exception")
+              ) {
+                hasError = true;
+              }
+              output.textContent += text;
+              // Auto-scroll to bottom
+              output.scrollTop = output.scrollHeight;
+              read();
+            });
+          }
+          read();
+        })
+        .catch(() => {
+          output.textContent = "❌ Server Error";
+          runBtn.disabled = false;
+          jsBtn.disabled = false;
+          pyBtn.disabled = false;
+          runBtn.innerText = "Run Code";
+          editor.updateOptions({ readOnly: false });
+        });
+    }
 
+    function changeTheme(theme) {
+      const root = document.documentElement;
+      if (theme === "dark") {
+        root.style.setProperty("--bg", "#0f0c1a");
+        root.style.setProperty("--panel", "#111827");
+        root.style.setProperty("--output", "#22c55e");
+      } else if (theme === "light") {
+        root.style.setProperty("--bg", "#f5f5f5");
+        root.style.setProperty("--panel", "#ffffff");
+        root.style.setProperty("--output", "#000");
+      } else if (theme === "midnight") {
+        root.style.setProperty("--bg", "#020617");
+        root.style.setProperty("--panel", "#0f172a");
+        root.style.setProperty("--output", "#38bdf8");
+      } else if (theme === "yellow") {
+        root.style.setProperty("--bg", "#fff8dc");
+        root.style.setProperty("--panel", "#fff1a8");
+        root.style.setProperty("--output", "#000");
+      }
+    }
 
-
-<header>
-
-<div class="logo">
-<div class="logo-icon">⚡</div>
-<span>CodeNova</span>
-</div>
-
-<div class="lang-nav">
-
-<button id="jsBtn" onclick="setLanguage('javascript')" class="lang-btn">
-JavaScript
-</button>
-
-<button id="pyBtn" onclick="setLanguage('python')" class="lang-btn">
-Python
-</button>
-
-</div>
-
-<div class="theme-nav">
-<button onclick="changeTheme('dark')">Dark</button>
-<button onclick="changeTheme('light')">Light</button>
-<button onclick="changeTheme('midnight')">Night</button>
-<button onclick="changeTheme('yellow')">Yellow</button>
-</div>
-
-<div class="mode-nav">
-<select onchange="changeMode(this.value)">
-<option value="active" selected>Active</option>
-<option value="disable">Disable</option>
-<option value="notepad">Notepad</option>
-</select>
-</div>
-
-<button id="runBtn" onclick="runCode()" class="run-btn">
-Run Code
-</button>
-
-</header>
-
-<div class="workspace">
-
-<div class="editor-panel">
-
-<div class="panel-header">
-Editor
-</div>
-
-<div id="editor"></div>
-
-</div>
-
-<div class="output-panel">
-
-<div class="panel-header">
-Terminal Output
-</div>
-
-<pre id="output">Run code to see output...</pre>
-
-</div>
-
-</div>
-
-<div class="statusbar">
-CodeNova Cloud Compiler ⚡
-</div>
-
-<script src="script.js"></script>
-
+    function changeMode(mode) {
+      if (mode === "active") {
+        editor.updateOptions({
+          quickSuggestions: true,
+          suggestOnTriggerCharacters: true,
+          acceptSuggestionOnEnter: "on",
+          tabCompletion: "on",
+          wordBasedSuggestions: true,
+          autoClosingBrackets: "always",
+          autoClosingQuotes: "always",
+          autoIndent: "full"
+        });
+      } else if (mode === "disable") {
+        editor.updateOptions({
+          quickSuggestions: false,
+          suggestOnTriggerCharacters: false,
+          acceptSuggestionOnEnter: "off",
+          tabCompletion: "off",
+          wordBasedSuggestions: false,
+          autoClosingBrackets: "always",
+          autoClosingQuotes: "always"
+        });
+      } else if (mode === "notepad") {
+        editor.updateOptions({
+          quickSuggestions: false,
+          suggestOnTriggerCharacters: false,
+          acceptSuggestionOnEnter: "off",
+          tabCompletion: "off",
+          wordBasedSuggestions: false,
+          autoClosingBrackets: "never",
+          autoClosingQuotes: "never",
+          autoIndent: "none"
+        });
+      }
+    }
+  </script>
 </body>
 </html>

@@ -139,45 +139,126 @@
 // }
 
 // module.exports = runJS
+// const { spawn } = require("child_process")
+
+// function runJS(code, res){
+
+// const child = spawn("node", ["-e", code], {
+// stdio: ["pipe","pipe","pipe"]
+// })
+
+// res.writeHead(200,{
+// "Content-Type":"text/plain",
+// "Transfer-Encoding":"chunked"
+// })
+
+// let finished = false
+
+// const timer = setTimeout(()=>{
+// if(!finished){
+// child.kill("SIGKILL")
+// res.write("\n⚠ Execution stopped (Time limit exceeded)")
+// res.end()
+// finished = true
+// }
+// },15000)
+
+// child.stdout.on("data",(data)=>{
+// res.write(data.toString())
+// })
+
+// child.stderr.on("data",(data)=>{
+// res.write(data.toString())
+// })
+
+// child.on("close",()=>{
+// if(!finished){
+// clearTimeout(timer)
+// res.end()
+// finished = true
+// }
+// })
+
+// }
+
+// module.exports = runJS
+
 const { spawn } = require("child_process")
+const path = require("path")
+const fs = require("fs")
 
-function runJS(code, res){
+function runJS(code,res){
 
-const child = spawn("node", ["-e", code], {
-stdio: ["pipe","pipe","pipe"]
-})
+const tempFile = path.join(__dirname,"temp.js")
+
+fs.writeFileSync(tempFile,code)
+
+const child = spawn("node",[tempFile])
+
+let finished = false
+
+// OUTPUT LIMITS
+let outputSize = 0
+let lineCount = 0
+
+const MAX_OUTPUT = 10000   // 10KB
+const MAX_LINES = 100
 
 res.writeHead(200,{
 "Content-Type":"text/plain",
 "Transfer-Encoding":"chunked"
 })
 
-let finished = false
-
-const timer = setTimeout(()=>{
-if(!finished){
-child.kill("SIGKILL")
-res.write("\n⚠ Execution stopped (Time limit exceeded)")
-res.end()
-finished = true
-}
-},15000)
-
 child.stdout.on("data",(data)=>{
+
+if(finished) return
+
+outputSize += data.length
+lineCount++
+
+if(outputSize > MAX_OUTPUT || lineCount > MAX_LINES){
+
+finished = true
+child.kill("SIGKILL")
+
+return res.end("\n⚠ Output limit exceeded")
+
+}
+
 res.write(data.toString())
+
 })
 
 child.stderr.on("data",(data)=>{
+
+if(finished) return
+
 res.write(data.toString())
+
 })
 
 child.on("close",()=>{
+
 if(!finished){
-clearTimeout(timer)
-res.end()
 finished = true
+res.end()
 }
+
 })
+
+// EXECUTION TIME LIMIT
+setTimeout(()=>{
+
+if(!finished){
+
+finished = true
+child.kill("SIGKILL")
+
+res.end("\n⚠ Execution stopped (Time limit exceeded)")
+
+}
+
+},5000)
 
 }
 
