@@ -168,7 +168,138 @@ border-bottom:1px solid #333;
 flex:1;
 
 }
+/* ================= MOBILE FIX ================= */
 
+@media screen and (max-width:768px){
+
+header{
+    display:flex;
+    flex-wrap:wrap;
+    align-items:center;
+    justify-content:space-between;
+    gap:6px;
+    padding:8px;
+}
+
+/* Active dropdown hide */
+
+.mode-nav{
+    display:none;
+}
+
+/* Run button always visible */
+
+.run-btn{
+    width:100%;
+    padding:8px;
+    font-size:13px;
+}
+
+/* Workspace vertical */
+
+.workspace{
+    display:flex;
+    flex-direction:column;
+    height:calc(100vh - 130px);
+}
+
+/* Editor bigger */
+
+.editor-panel{
+    width:100%;
+    height:65vh;
+}
+
+/* Output smaller */
+
+.output-panel{
+    width:100%;
+    height:35vh;
+}
+
+/* Status bar */
+
+.statusbar{
+    font-size:11px;
+    text-align:center;
+}
+
+}/* ================= MOBILE RESPONSIVE FIX ================= */
+
+@media screen and (max-width:768px){
+
+/* HEADER */
+
+header{
+    display:flex;
+    flex-wrap:wrap;
+    align-items:center;
+    gap:6px;
+    padding:8px;
+}
+
+/* Hide mode nav (Active dropdown) */
+
+.mode-nav{
+    display:none;
+}
+
+/* WORKSPACE STACK */
+
+.workspace{
+    display:flex;
+    flex-direction:column;
+    height:calc(100vh - 120px);
+}
+
+/* EDITOR BIGGER */
+
+.editor-panel{
+    width:100%;
+    height:65vh;
+}
+
+/* OUTPUT */
+
+.output-panel{
+    width:100%;
+    height:35vh;
+}
+
+/* ================= RUN BUTTON ================= */
+
+/* mobile floating run button */
+
+.run-btn{
+    position:fixed;
+    bottom:60px;
+    left:50%;
+    transform:translateX(-50%);
+    
+    background:#ff3b3b;
+    color:white;
+    
+    border:none;
+    padding:12px 20px;
+    
+    font-size:14px;
+    font-weight:bold;
+    
+    border-radius:8px;
+    
+    z-index:999;
+    
+    box-shadow:0 4px 12px rgba(0,0,0,0.4);
+}
+
+/* status bar */
+
+.statusbar{
+    font-size:11px;
+    text-align:center;
+}
+
+}
 /* TERMINAL */
 
 #output{
