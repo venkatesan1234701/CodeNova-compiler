@@ -223,7 +223,7 @@ font-family:'JetBrains Mono';
 </head>
 
 <body>
-
+<!-- 
 <header>
 
 <div class="logo">
@@ -233,13 +233,13 @@ font-family:'JetBrains Mono';
 
 <div class="lang-nav">
 
-<!-- <button onclick="setLanguage('javascript')" class="lang-btn">
+<button onclick="setLanguage('javascript')" class="lang-btn">
 JavaScript
 </button>
 
 <button onclick="setLanguage('python')" class="lang-btn">
 Python
-</button> -->
+</button> 
 
 <button id="jsBtn" onclick="setLanguage('javascript')" class="lang-btn">
 JavaScript
@@ -252,6 +252,7 @@ Python
 </div>
 
 <div class="theme-nav">
+    
 
 <button onclick="changeTheme('dark')">Dark</button>
 <button onclick="changeTheme('light')">Light</button>
@@ -260,9 +261,51 @@ Python
 
 </div>
 
-<!-- <button onclick="runCode()" class="run-btn">
+ <button onclick="runCode()" class="run-btn">
 Run Code
-</button> -->
+</button> 
+
+<button id="runBtn" onclick="runCode()" class="run-btn">
+Run Code
+</button>
+
+</header> -->
+
+
+
+<header>
+
+<div class="logo">
+<div class="logo-icon">⚡</div>
+<span>CodeNova</span>
+</div>
+
+<div class="lang-nav">
+
+<button id="jsBtn" onclick="setLanguage('javascript')" class="lang-btn">
+JavaScript
+</button>
+
+<button id="pyBtn" onclick="setLanguage('python')" class="lang-btn">
+Python
+</button>
+
+</div>
+
+<div class="theme-nav">
+<button onclick="changeTheme('dark')">Dark</button>
+<button onclick="changeTheme('light')">Light</button>
+<button onclick="changeTheme('midnight')">Night</button>
+<button onclick="changeTheme('yellow')">Yellow</button>
+</div>
+
+<div class="mode-nav">
+<select onchange="changeMode(this.value)">
+<option value="active" selected>Active</option>
+<option value="disable">Disable</option>
+<option value="notepad">Notepad</option>
+</select>
+</div>
 
 <button id="runBtn" onclick="runCode()" class="run-btn">
 Run Code

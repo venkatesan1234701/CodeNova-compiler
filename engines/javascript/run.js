@@ -139,18 +139,29 @@
 // }
 
 // module.exports = runJS
-
-
 const { spawn } = require("child_process")
 
 function runJS(code, res){
 
-const child = spawn("node", ["-e", code])
+const child = spawn("node", ["-e", code], {
+stdio: ["pipe","pipe","pipe"]
+})
 
 res.writeHead(200,{
 "Content-Type":"text/plain",
 "Transfer-Encoding":"chunked"
 })
+
+let finished = false
+
+const timer = setTimeout(()=>{
+if(!finished){
+child.kill("SIGKILL")
+res.write("\n⚠ Execution stopped (Time limit exceeded)")
+res.end()
+finished = true
+}
+},15000)
 
 child.stdout.on("data",(data)=>{
 res.write(data.toString())
@@ -161,16 +172,13 @@ res.write(data.toString())
 })
 
 child.on("close",()=>{
+if(!finished){
+clearTimeout(timer)
 res.end()
+finished = true
+}
 })
-
-setTimeout(()=>{
-child.kill("SIGKILL")
-res.end("\n⚠ Execution stopped (Time limit exceeded)")
-},15000)
 
 }
 
 module.exports = runJS
-
-
