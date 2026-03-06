@@ -92,9 +92,11 @@ const app = express()
 
 app.use(cors())
 app.use(express.json())
-app.get("/", (req, res) => {
-  res.send("CodeNova backend running 🚀");
-});
+
+app.get("/",(req,res)=>{
+res.send("CodeNova backend running 🚀")
+})
+
 app.post("/run",(req,res)=>{
 
 const { language, code } = req.body
@@ -107,11 +109,11 @@ error:"Language or code missing"
 
 try{
 
-if(language === "javascript"){
+if(language==="javascript"){
 runJS(code,res)
 }
 
-else if(language === "python"){
+else if(language==="python"){
 runPython(code,res)
 }
 
@@ -123,6 +125,8 @@ error:"Language not supported"
 
 }catch(err){
 
+console.error(err)
+
 res.json({
 error:"Server error"
 })
@@ -130,10 +134,6 @@ error:"Server error"
 }
 
 })
-
-// app.listen(5000,()=>{
-// console.log("🚀 Server running on port 5000")
-// })
 
 const PORT = process.env.PORT || 5000
 
