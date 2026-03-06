@@ -81,9 +81,9 @@
 // })
 
 
-
 const express = require("express")
 const cors = require("cors")
+const path = require("path")
 
 const runJS = require("../engines/javascript/run")
 const runPython = require("../engines/python/run")
@@ -93,10 +93,17 @@ const app = express()
 app.use(cors())
 app.use(express.json())
 
+// serve frontend files
+// app.use(express.static(path.join(__dirname,"../public")))
+app.use(express.static(path.join(__dirname,"public")))
+
+// GET route -> open index.html
 app.get("/",(req,res)=>{
-res.send("CodeNova backend running 🚀")
+// res.sendFile(path.join(__dirname,"../public/index.html"))
+res.sendFile(path.join(__dirname,"public/index.html"))
 })
 
+// compiler API
 app.post("/run",(req,res)=>{
 
 const { language, code } = req.body
