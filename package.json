@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
   "name": "backend",
   "version": "1.0.0",
   "main": "index.js",
@@ -9,10 +10,16 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
+=======
+>>>>>>> b5116087c5f40026f42b6cdca0e690de45919160
   "dependencies": {
     "cors": "^2.8.6",
     "express": "^5.2.1",
     "mongodb": "^7.1.0"
+<<<<<<< HEAD
   },
   "description": ""
+=======
+  }
+>>>>>>> b5116087c5f40026f42b6cdca0e690de45919160
 }
