@@ -43,6 +43,7 @@ editor.setValue(`print("Python running 🚀")`);
 }
 
 
+
 function runCode(){
 
 const code = editor.getValue()
@@ -70,7 +71,7 @@ editor.updateOptions({
 readOnly:true
 })
 
-fetch("/run",{
+fetch("https://codenova-compiler-1.onrender.com/run",{
 
 method:"POST",
 
@@ -167,132 +168,6 @@ readOnly:false
 })
 
 }
-
-
-// function runCode(){
-
-// const code = editor.getValue()
-
-// const output = document.getElementById("output")
-
-// const runBtn = document.getElementById("runBtn")
-// const jsBtn = document.getElementById("jsBtn")
-// const pyBtn = document.getElementById("pyBtn")
-
-// let hasError = false
-// let firstOutput = true
-
-// const startTime = performance.now()
-
-// output.textContent = "▶ Running...\n\n"
-
-// runBtn.disabled = true
-// jsBtn.disabled = true
-// pyBtn.disabled = true
-
-// runBtn.innerText = "Running..."
-
-// editor.updateOptions({
-// readOnly:true
-// })
-
-// fetch("https://codenova-compiler-production.up.railway.app/run",{
-
-// method:"POST",
-
-// headers:{
-// "Content-Type":"application/json"
-// },
-
-// body:JSON.stringify({
-// language:currentLanguage,
-// code:code
-// })
-
-// })
-// .then(response=>{
-
-// const reader = response.body.getReader()
-// const decoder = new TextDecoder()
-
-// function read(){
-
-// reader.read().then(({done,value})=>{
-
-// if(done){
-
-// const endTime = performance.now()
-// const execTime = ((endTime-startTime)/1000).toFixed(4)
-
-// output.textContent += "\n-------------------------\n"
-
-// output.textContent += `⏱ Execution Time: ${execTime}s\n`
-// output.textContent += `💾 Memory Usage: ~5 MB\n`
-
-// if(hasError){
-// output.textContent += "❌ Execution Error"
-// }
-// else{
-// output.textContent += "✅ Execution Completed"
-// }
-
-// runBtn.disabled = false
-// jsBtn.disabled = false
-// pyBtn.disabled = false
-
-// runBtn.innerText = "Run Code"
-
-// editor.updateOptions({
-// readOnly:false
-// })
-
-// return
-// }
-
-// const text = decoder.decode(value)
-
-// if(firstOutput){
-// output.textContent=""
-// firstOutput=false
-// }
-
-// if(
-// text.includes("Error") ||
-// text.includes("ReferenceError") ||
-// text.includes("SyntaxError") ||
-// text.includes("Traceback")
-// ){
-// hasError=true
-// }
-
-// output.textContent += text
-
-// read()
-
-// })
-
-// }
-
-// read()
-
-// })
-// .catch(()=>{
-
-// output.textContent="❌ Server Error"
-
-// runBtn.disabled=false
-// jsBtn.disabled=false
-// pyBtn.disabled=false
-
-// runBtn.innerText="Run Code"
-
-// editor.updateOptions({
-// readOnly:false
-// })
-
-// })
-
-// }
 
 function changeTheme(theme){
 
